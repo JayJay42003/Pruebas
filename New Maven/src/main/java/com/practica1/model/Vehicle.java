@@ -15,13 +15,8 @@ public abstract class Vehicle {
         this.typeFuel = FuelType.valueOf(typeFuel);
     }
 
-    //Enumerador tipo combustible
-    public enum FuelType{
-        GASOLINE,
-        DIESEL,
-        ELECTRIC,
-        HYBRID
-    };
+
+
 
     //Getters variables base
     public String getBrand() {

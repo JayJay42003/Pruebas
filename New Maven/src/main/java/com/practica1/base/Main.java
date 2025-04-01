@@ -13,18 +13,21 @@ public class Main {
         Car car = new Car("Toyota", "Corolla", LocalDate.of(2020, 5, 10), "GASOLINE",4);
         Motorcycle motorcycle = new Motorcycle("Harley-Davidson", "Sportster", LocalDate.of(2018, 8, 15), "GASOLINE",150);
 
+        //Prueba del coche
         car.accelerate();
         car.brake();
         car.showInfo();
 
+        //Prueba de la moto
         motorcycle.accelerate();
         motorcycle.brake();
         motorcycle.showInfo();
 
-        List<Vehicle> vehiculos=new ArrayList<>();
-        vehiculos.add(car);
-        vehiculos.add(motorcycle);
-        for (Vehicle v:vehiculos){
+        //Coleccion de vehiculos con su informacion
+        List<Vehicle> vehicles=new ArrayList<>();
+        vehicles.add(car);
+        vehicles.add(motorcycle);
+        for (Vehicle v:vehicles){
             v.showInfo();
         };
     }
