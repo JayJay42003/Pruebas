@@ -6,8 +6,10 @@ public class Motorcycle extends Vehicle {
     private int cylinderCapacity;
 
     //Constructor de moto
-    public Motorcycle(String brand, String model, LocalDate year, String typeFuel, int cylinderCapacity) {
-        super(brand, model, year, typeFuel);
+
+
+    public Motorcycle(String licensePlate, String brand, String model, LocalDate year, String typeFuel, int cylinderCapacity) {
+        super(licensePlate, brand, model, year, typeFuel);
         this.cylinderCapacity = cylinderCapacity;
     }
 
@@ -19,7 +21,7 @@ public class Motorcycle extends Vehicle {
     //Mostrar la informacion de las variables de este objeto
     @Override
     public void showInfo() {
-        System.out.println("Marca:"+ getBrand()+" Modelo:"+ getModel()+" Año:"+ getYear()+
+        System.out.println("Matricula:"+getLicensePlate()+" Marca:"+ getBrand()+" Modelo:"+ getModel()+" Año:"+ getYear()+
                 " Tipo Combustible:"+ getTypeFuel().name()+" Cilindrada:"+ getCylinderCapacity());
     }
 
@@ -33,5 +35,10 @@ public class Motorcycle extends Vehicle {
     @Override
     public void brake() {
         System.out.println("La moto esta frenando");
+    }
+
+    @Override
+    public int compareTo(Vehicle o) {
+        return this.getBrand().compareTo(o.getBrand());
     }
 }

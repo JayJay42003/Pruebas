@@ -2,13 +2,14 @@ package com.practica1.model;
 
 import java.time.LocalDate;
 
-public abstract class Vehicle {
-    private String brand, model;
+public abstract class Vehicle implements Comparable<Vehicle>{
+    private String brand, model,licensePlate;
     private LocalDate year;
     private FuelType typeFuel;
 
     //Constructor base
-    public Vehicle(String brand, String model, LocalDate year, String typeFuel) {
+    public Vehicle(String licensePlate,String brand, String model, LocalDate year, String typeFuel) {
+        this.licensePlate=licensePlate;
         this.brand = brand;
         this.model = model;
         this.year = year;
@@ -16,9 +17,11 @@ public abstract class Vehicle {
     }
 
 
-
-
     //Getters variables base
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
     public String getBrand() {
         return brand;
     }

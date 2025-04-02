@@ -6,8 +6,10 @@ public class Car extends Vehicle{
     private int doorsNum;
 
     //Constructor de coche
-    public Car(String brand, String model, LocalDate year, String typeFuel, int doorsNum) {
-        super(brand, model, year, typeFuel);
+
+
+    public Car(String licensePlate, String brand, String model, LocalDate year, String typeFuel, int doorsNum) {
+        super(licensePlate, brand, model, year, typeFuel);
         this.doorsNum = doorsNum;
     }
 
@@ -19,7 +21,7 @@ public class Car extends Vehicle{
     //Mostrar la informacion de las variables de este objeto
     @Override
     public void showInfo() {
-        System.out.println("Marca:"+ getBrand()+" Modelo:"+ getModel()+" Año:"+ getYear()+
+        System.out.println("Matricula:"+getLicensePlate()+" Marca:"+ getBrand()+" Modelo:"+ getModel()+" Año:"+ getYear()+
                 " Tipo Combustible:"+ getTypeFuel().name()+" Numero Puertas:"+ getDoorsNum());
     }
 
@@ -29,9 +31,14 @@ public class Car extends Vehicle{
         System.out.println("El coche esta acelerando");
     }
 
-    //Imprimir un mensaje que indica que la coche frena
+    //Imprimir un mensaje que indica que el coche frena
     @Override
     public void brake() {
         System.out.println("El coche esta frenando");
+    }
+
+    @Override
+    public int compareTo(Vehicle o) {
+        return this.getBrand().compareTo(o.getBrand());
     }
 }
