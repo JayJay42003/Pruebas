@@ -15,25 +15,60 @@ public class Concesionario {
 
     //Añade el vehículo en las 3 colecciones diferentes de ArrayList,HashMap y Set
     public void addVehicle(Vehicle vehicle){
-        vehiclesArrayList.add(vehicle);
-        vehiclesHashMap.put(vehicle.getLicensePlate(),vehicle);
-        brandSet.add(vehicle.getBrand());
+        try {
+        if(vehiclesHashMap.containsKey(vehicle.getLicensePlate())){
+            throw new licenseAlreadyAddedException(vehicle.getLicensePlate());
+        }
+            vehiclesArrayList.add(vehicle);
+            vehiclesHashMap.put(vehicle.getLicensePlate(), vehicle);
+            brandSet.add(vehicle.getBrand());
 
-        System.out.println("Vehiculo añadido al concesionario");
+            System.out.println("Vehiculo añadido al concesionario");
+
+        } catch (licenseAlreadyAddedException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     //Busca un vehículo por su matricula
     public Vehicle findVehicleByLicensePlate(String licensePlate){
+        try {
+            if(!vehiclesHashMap.containsKey(licensePlate)) {
+                throw new licenseNotAddedException(licensePlate);
+            }
+        } catch (licenseNotAddedException e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+
         return vehiclesHashMap.get(licensePlate);
     }
 
-    //Da una lista sin duplicados de las matriculas, sin acceder directamente a la misma
+    //Da una lista sin duplicados de las matrículas, sin acceder directamente a la misma
     public Set<String> getAllLicensePlates(){
+        try {
+            if (brandSet.isEmpty()) {
+                throw new brandSetEmptyException();
+            }
+        }catch(brandSetEmptyException b){
+            System.err.println(b.getMessage());
+            return null;
+        }
         return new HashSet<>(brandSet);
     }
 
     //Busca un conjunto de vehiculos de la clase dada
     public List<Vehicle> filterByType(Class<?> tipo){
+        try{
+            if(!tipo.isInstance(Vehicle.class)){
+                throw new typeDontExistsException(tipo);
+            }
+        }catch(typeDontExistsException t){
+            System.err.println(t.getMessage());
+            return null;
+        }
+
+
         List<Vehicle> vehiclesReturned=new ArrayList<>();
 
         for (Vehicle v:vehiclesArrayList){
@@ -49,8 +84,17 @@ public class Concesionario {
 
     //Borra las instancias del vehículo que tiene esa matrícula
     public void deleteByLicensePlate(String licensePlate){
+        try {
+        if(!vehiclesHashMap.containsKey(licensePlate)){
+            throw new licenseNotAddedException(licensePlate);
+        }
+
         Vehicle v=vehiclesHashMap.remove(licensePlate);
         vehiclesArrayList.remove(v);
         brandSet.remove(v.getLicensePlate());
+
+        } catch (licenseNotAddedException e) {
+            System.err.println(e.getMessage());
+        }
     }
 }

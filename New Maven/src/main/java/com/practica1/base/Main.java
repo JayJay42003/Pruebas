@@ -28,7 +28,17 @@ public class Main {
             v.showInfo();
         };*/
 
+        //En el main, usar los métodos para añadir vehiculos de distinto tipo.
+        //
+        //Mostrar la informacion de los vehiculos utilizando los metodos implementados en el punto anterior.
+        //
+        //Usar TreeSet para ordenar por marca y volver a mostrar todos los vehiculos ordenados.
+
         Concesionario concesionario1=new Concesionario();
+
+        //Excepcion brandSetEmpty
+        concesionario1.getAllLicensePlates();
+
         concesionario1.addVehicle(new Car("123456XYZ","Mercedes","CLA Coupé",LocalDate.of(2004,6,23), FuelType.HYBRID.name(), 4));
         concesionario1.addVehicle(new Motorcycle("22361BVC","KTM","125 Duke",LocalDate.of(2012,10,3),FuelType.GASOLINE.name(),125));
         concesionario1.addVehicle(new Motorcycle("22363BVC", "Yamaha", "R1", LocalDate.of(2020, 3, 5), FuelType.HYBRID.name(), 998));
@@ -36,13 +46,38 @@ public class Main {
         concesionario1.addVehicle(new Car("1617181920PQR", "Volkswagen", "Golf", LocalDate.of(2018, 9, 9), FuelType.ELECTRIC.name(), 5));
 
 
+        /*
+        System.out.println("Encontrar vehiculo por matricula:");
+        concesionario1.findVehicleByLicensePlate("123456XYZ").showInfo();
+        System.out.println("Encontrar vehiculos por tipo:");
+        for (Vehicle v:concesionario1.filterByType(Car.class)){
+            v.showInfo();
+        }
+        System.out.println("Enseñar todas las matriculas:");
+        for (String str:concesionario1.getAllLicensePlates()){
+            System.out.println(str);
+        }
+        */
 
-        TreeSet<Vehicle> vehicleTreeSet=new TreeSet<>();
+
+        /*TreeSet<Vehicle> vehicleTreeSet=new TreeSet<>();
         vehicleTreeSet.addAll(concesionario1.filterByType(Car.class));
         vehicleTreeSet.addAll(concesionario1.filterByType(Motorcycle.class));
 
         for(Vehicle v:vehicleTreeSet){
             v.showInfo();
-        }
+        }*/
+
+        //Excepcion licenseAlreadyAdded
+        concesionario1.addVehicle(new Car("1617181920PQR", "Volkswagen", "Golf", LocalDate.of(2018, 9, 9), FuelType.ELECTRIC.name(), 5));
+
+        //Excepcion licenseNotAdded
+        concesionario1.findVehicleByLicensePlate("21233SSD");
+
+        //Excepcion licenseNotAdded
+        concesionario1.deleteByLicensePlate("21233SSD");
+
+        //Excepcion typeDontExists
+        concesionario1.filterByType(Concesionario.class);
     }
 }
