@@ -35,11 +35,16 @@ public class Main {
         //Usar TreeSet para ordenar por marca y volver a mostrar todos los vehiculos ordenados.
 
         Concesionario concesionario1=new Concesionario();
+
+        //Excepcion brandSetEmpty
+        concesionario1.getAllLicensePlates();
+
         concesionario1.addVehicle(new Car("123456XYZ","Mercedes","CLA Coupé",LocalDate.of(2004,6,23), FuelType.HYBRID.name(), 4));
         concesionario1.addVehicle(new Motorcycle("22361BVC","KTM","125 Duke",LocalDate.of(2012,10,3),FuelType.GASOLINE.name(),125));
         concesionario1.addVehicle(new Motorcycle("22363BVC", "Yamaha", "R1", LocalDate.of(2020, 3, 5), FuelType.HYBRID.name(), 998));
         concesionario1.addVehicle(new Motorcycle("22364BVC", "Suzuki", "GSX-R1000", LocalDate.of(2019, 8, 18), FuelType.GASOLINE.name(), 999));
         concesionario1.addVehicle(new Car("1617181920PQR", "Volkswagen", "Golf", LocalDate.of(2018, 9, 9), FuelType.ELECTRIC.name(), 5));
+
 
         /*
         System.out.println("Encontrar vehiculo por matricula:");
@@ -55,12 +60,24 @@ public class Main {
         */
 
 
-        TreeSet<Vehicle> vehicleTreeSet=new TreeSet<>();
+        /*TreeSet<Vehicle> vehicleTreeSet=new TreeSet<>();
         vehicleTreeSet.addAll(concesionario1.filterByType(Car.class));
         vehicleTreeSet.addAll(concesionario1.filterByType(Motorcycle.class));
 
         for(Vehicle v:vehicleTreeSet){
             v.showInfo();
-        }
+        }*/
+
+        //Excepcion licenseAlreadyAdded
+        concesionario1.addVehicle(new Car("1617181920PQR", "Volkswagen", "Golf", LocalDate.of(2018, 9, 9), FuelType.ELECTRIC.name(), 5));
+
+        //Excepcion licenseNotAdded
+        concesionario1.findVehicleByLicensePlate("21233SSD");
+
+        //Excepcion licenseNotAdded
+        concesionario1.deleteByLicensePlate("21233SSD");
+
+        //Excepcion typeDontExists
+        concesionario1.filterByType(Concesionario.class);
     }
 }
