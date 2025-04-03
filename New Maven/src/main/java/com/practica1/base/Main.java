@@ -1,9 +1,9 @@
 package com.practica1.base;
 
 import com.practica1.model.*;
+import com.practica1.service.SvcConcessionaire;
 
 import java.time.LocalDate;
-import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -34,16 +34,17 @@ public class Main {
         //
         //Usar TreeSet para ordenar por marca y volver a mostrar todos los vehiculos ordenados.
 
-        Concesionario concesionario1=new Concesionario();
+        Concessionaire concessionaire1 =new Concessionaire();
+        SvcConcessionaire svcConcessionaire=new SvcConcessionaire(concessionaire1);
 
         //Excepcion brandSetEmpty
-        concesionario1.getAllLicensePlates();
+        svcConcessionaire.getAllLicensePlates();
 
-        concesionario1.addVehicle(new Car("123456XYZ","Mercedes","CLA Coupé",LocalDate.of(2004,6,23), FuelType.HYBRID.name(), 4));
-        concesionario1.addVehicle(new Motorcycle("22361BVC","KTM","125 Duke",LocalDate.of(2012,10,3),FuelType.GASOLINE.name(),125));
-        concesionario1.addVehicle(new Motorcycle("22363BVC", "Yamaha", "R1", LocalDate.of(2020, 3, 5), FuelType.HYBRID.name(), 998));
-        concesionario1.addVehicle(new Motorcycle("22364BVC", "Suzuki", "GSX-R1000", LocalDate.of(2019, 8, 18), FuelType.GASOLINE.name(), 999));
-        concesionario1.addVehicle(new Car("1617181920PQR", "Volkswagen", "Golf", LocalDate.of(2018, 9, 9), FuelType.ELECTRIC.name(), 5));
+        svcConcessionaire.addVehicle(new Car("123456XYZ","Mercedes","CLA Coupé",LocalDate.of(2004,6,23), FuelType.HYBRID.name(), 4));
+        svcConcessionaire.addVehicle(new Motorcycle("22361BVC","KTM","125 Duke",LocalDate.of(2012,10,3),FuelType.GASOLINE.name(),125));
+        svcConcessionaire.addVehicle(new Motorcycle("22363BVC", "Yamaha", "R1", LocalDate.of(2020, 3, 5), FuelType.HYBRID.name(), 998));
+        svcConcessionaire.addVehicle(new Motorcycle("22364BVC", "Suzuki", "GSX-R1000", LocalDate.of(2019, 8, 18), FuelType.GASOLINE.name(), 999));
+        svcConcessionaire.addVehicle(new Car("1617181920PQR", "Volkswagen", "Golf", LocalDate.of(2018, 9, 9), FuelType.ELECTRIC.name(), 5));
 
 
         /*
@@ -69,15 +70,15 @@ public class Main {
         }*/
 
         //Excepcion licenseAlreadyAdded
-        concesionario1.addVehicle(new Car("1617181920PQR", "Volkswagen", "Golf", LocalDate.of(2018, 9, 9), FuelType.ELECTRIC.name(), 5));
+        svcConcessionaire.addVehicle(new Car("1617181920PQR", "Volkswagen", "Golf", LocalDate.of(2018, 9, 9), FuelType.ELECTRIC.name(), 5));
 
         //Excepcion licenseNotAdded
-        concesionario1.findVehicleByLicensePlate("21233SSD");
+        svcConcessionaire.findVehicleByLicensePlate("21233SSD");
 
         //Excepcion licenseNotAdded
-        concesionario1.deleteByLicensePlate("21233SSD");
+        svcConcessionaire.deleteByLicensePlate("21233SSD");
 
         //Excepcion typeDontExists
-        concesionario1.filterByType(Concesionario.class);
+        svcConcessionaire.filterByType(Concessionaire.class);
     }
 }
