@@ -4,13 +4,30 @@ import java.time.LocalDate;
 
 public class Car extends Vehicle{
     private int doorsNum;
+    private int idVehicle , idConcessionaire;
 
     //Constructor de coche
+    public Car() {
+    }
 
+    public Car(int idVehicle, int idConcessionaire, String licensePlate, String brand, String model, LocalDate year, String typeFuel, int doorsNum) {
+        super(licensePlate, brand, model, year, typeFuel);
+        this.idVehicle = idVehicle;
+        this.idConcessionaire = idConcessionaire;
+        this.doorsNum = doorsNum;
+    }
 
     public Car(String licensePlate, String brand, String model, LocalDate year, String typeFuel, int doorsNum) {
         super(licensePlate, brand, model, year, typeFuel);
         this.doorsNum = doorsNum;
+    }
+
+    public int getIdVehicle() {
+        return idVehicle;
+    }
+
+    public int getIdConcessionaire() {
+        return idConcessionaire;
     }
 
     //Getter numero de puertas
@@ -21,11 +38,15 @@ public class Car extends Vehicle{
     //Mostrar la informacion de las variables de este objeto
     @Override
     public void showInfo() {
-        System.out.println("Matricula:"+getLicensePlate()+" Marca:"+ getBrand()+" Modelo:"+ getModel()+" Año:"+ getYear()+
-                " Tipo Combustible:"+ getTypeFuel().name()+" Numero Puertas:"+ getDoorsNum());
+        try {
+            System.out.println("Matricula:" + getLicensePlate() + " Marca:" + getBrand() + " Modelo:" + getModel() + " Año:" + getYear() +
+                    " Tipo Combustible:" + getTypeFuel().name() + " Numero Puertas:" + getDoorsNum());
+        }catch(NullPointerException nullP){
+            System.out.println("El objeto es nulo");
+        }
     }
 
-    //Imprimir un mensaje que indica que la coche acelera
+    //Imprimir un mensaje que indica que el coche acelera
     @Override
     public void accelerate() {
         System.out.println("El coche esta acelerando");

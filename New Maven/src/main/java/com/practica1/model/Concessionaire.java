@@ -3,14 +3,24 @@ package com.practica1.model;
 import java.util.*;
 
 public class Concessionaire {
+    private int id;
+    private String name;
+    private int numVehicles;
     private ArrayList<Vehicle> vehiclesArrayList;
-    private HashMap<String,Vehicle> vehiclesHashMap;
+    private HashMap<String, Vehicle> vehiclesHashMap;
     private Set<String> brandSet;
 
-    public Concessionaire() {
+    public Concessionaire(int id, String name, int numVehicles) {
         this.vehiclesArrayList = new ArrayList<>();
         this.vehiclesHashMap = new HashMap<>();
         this.brandSet = new HashSet<>();
+        this.id = id;
+        this.name = name;
+        this.numVehicles = numVehicles;
+    }
+
+    public Concessionaire() {
+
     }
 
     public ArrayList<Vehicle> getVehiclesArrayList() {
@@ -21,7 +31,7 @@ public class Concessionaire {
         this.vehiclesArrayList.add(vehicle);
     }
 
-    public void removeFromVehicleArrayList(Vehicle vehicle){
+    public void removeFromVehicleArrayList(Vehicle vehicle) {
         this.vehiclesArrayList.remove(vehicle);
     }
 
@@ -29,11 +39,11 @@ public class Concessionaire {
         return vehiclesHashMap;
     }
 
-    public void addToVehiclesHashmap(String str,Vehicle vehicle) {
-        this.vehiclesHashMap.put(str,vehicle);
+    public void addToVehiclesHashmap(String str, Vehicle vehicle) {
+        this.vehiclesHashMap.put(str, vehicle);
     }
 
-    public Vehicle removeFromVehicleHashmap(String licensePlate){
+    public Vehicle removeFromVehicleHashmap(String licensePlate) {
         return this.vehiclesHashMap.remove(licensePlate);
     }
 
@@ -45,7 +55,24 @@ public class Concessionaire {
         this.brandSet.add(str);
     }
 
-    public void removeFromBrandSet(String brand){
+    public void removeFromBrandSet(String brand) {
         this.brandSet.remove(brand);
+    }
+
+    @Override
+    public String toString() {
+        return "Concessionaire{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", numVehicles=" + numVehicles +
+                '}';
+    }
+
+    public void showInfo() {
+        try {
+            System.out.println(this);
+        } catch (NullPointerException nullP) {
+            System.out.println("El objeto es nulo");
+        }
     }
 }

@@ -8,7 +8,10 @@ public abstract class Vehicle implements Comparable<Vehicle>{
     private FuelType typeFuel;
 
     //Constructor base
-    public Vehicle(String licensePlate,String brand, String model, LocalDate year, String typeFuel) {
+    public Vehicle() {
+    }
+
+    public Vehicle(String licensePlate, String brand, String model, LocalDate year, String typeFuel) {
         this.licensePlate=licensePlate;
         this.brand = brand;
         this.model = model;
