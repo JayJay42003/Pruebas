@@ -1,10 +1,11 @@
 package com.practica1.base;
 
 import com.practica1.model.*;
-import com.practica1.model.dao.CarDao;
-import com.practica1.model.dao.ConcessionaireDao;
-import com.practica1.model.dao.MotorcycleDao;
-import com.practica1.model.dao.VehicleDao;
+import com.practica1.model.common.FuelType;
+import com.practica1.service.dao.CarDao;
+import com.practica1.service.dao.ConcessionaireDao;
+import com.practica1.service.dao.MotorcycleDao;
+import com.practica1.service.dao.VehicleDao;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,5 +1,7 @@
 package com.practica1.model;
 
+import com.practica1.model.common.FuelType;
+
 import java.time.LocalDate;
 
 public abstract class Vehicle implements Comparable<Vehicle>{

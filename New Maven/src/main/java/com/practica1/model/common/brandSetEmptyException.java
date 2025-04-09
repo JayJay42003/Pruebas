@@ -1,4 +1,4 @@
-package com.practica1.model;
+package com.practica1.model.common;
 
 public class brandSetEmptyException extends Exception {
     public brandSetEmptyException(){
