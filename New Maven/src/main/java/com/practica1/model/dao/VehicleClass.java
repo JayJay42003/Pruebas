@@ -1,4 +1,4 @@
-package com.practica1.model.DAO;
+package com.practica1.model.dao;
 
 public class VehicleClass {
     private int idVehicle;
