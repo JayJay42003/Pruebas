@@ -1,15 +1,16 @@
 package com.practica1.model.dao;
 
 import com.practica1.model.DatabaseConnection;
+import com.practica1.model.VehicleClass;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class VehicleDAO {
+public class VehicleDao {
     private DatabaseConnection databaseConnection;
 
-    public VehicleDAO(DatabaseConnection databaseConnection) {
+    public VehicleDao(DatabaseConnection databaseConnection) {
         this.databaseConnection = databaseConnection;
     }
 

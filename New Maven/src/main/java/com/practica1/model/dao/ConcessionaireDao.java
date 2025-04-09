@@ -7,10 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ConcessionaireDAO {
+public class ConcessionaireDao {
     private DatabaseConnection databaseConnection;
 
-    public ConcessionaireDAO(DatabaseConnection databaseConnection) {
+    public ConcessionaireDao(DatabaseConnection databaseConnection) {
         this.databaseConnection = databaseConnection;
     }
 

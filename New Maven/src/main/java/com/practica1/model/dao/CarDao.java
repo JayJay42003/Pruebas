@@ -3,17 +3,14 @@ package com.practica1.model.dao;
 import com.practica1.model.Car;
 import com.practica1.model.DatabaseConnection;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarDAO {
+public class CarDao {
     private DatabaseConnection databaseConnection;
 
-    public CarDAO(DatabaseConnection databaseConnection) {
+    public CarDao(DatabaseConnection databaseConnection) {
         this.databaseConnection = databaseConnection;
     }
 

@@ -8,10 +8,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MotorcycleDAO {
+public class MotorcycleDao {
     private DatabaseConnection databaseConnection;
 
-    public MotorcycleDAO(DatabaseConnection databaseConnection) {
+    public MotorcycleDao(DatabaseConnection databaseConnection) {
         this.databaseConnection = databaseConnection;
     }
 
