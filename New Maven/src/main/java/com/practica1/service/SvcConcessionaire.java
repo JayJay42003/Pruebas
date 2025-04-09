@@ -1,6 +1,10 @@
 package com.practica1.service;
 
 import com.practica1.model.*;
+import com.practica1.model.common.brandSetEmptyException;
+import com.practica1.model.common.licenseAlreadyAddedException;
+import com.practica1.model.common.licenseNotAddedException;
+import com.practica1.model.common.typeDontExistsException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
