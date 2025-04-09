@@ -1,21 +1,17 @@
-package com.practica1.model.DAO;
+package com.practica1.model.dao;
 
 import com.practica1.model.DatabaseConnection;
 import com.practica1.model.Motorcycle;
-import com.practica1.model.Vehicle;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.List;
 
-public class MotorcycleCRUD{
+public class MotorcycleDAO {
     private DatabaseConnection databaseConnection;
 
-    public MotorcycleCRUD(DatabaseConnection databaseConnection) {
+    public MotorcycleDAO(DatabaseConnection databaseConnection) {
         this.databaseConnection = databaseConnection;
     }
 

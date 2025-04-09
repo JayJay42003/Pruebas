@@ -1,9 +1,7 @@
-package com.practica1.model.DAO;
+package com.practica1.model.dao;
 
 import com.practica1.model.Car;
 import com.practica1.model.DatabaseConnection;
-import com.practica1.model.Motorcycle;
-import com.practica1.model.Vehicle;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -12,10 +10,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarCRUD  {
+public class CarDAO {
     private DatabaseConnection databaseConnection;
 
-    public CarCRUD(DatabaseConnection databaseConnection) {
+    public CarDAO(DatabaseConnection databaseConnection) {
         this.databaseConnection = databaseConnection;
     }
 

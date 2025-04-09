@@ -1,4 +1,4 @@
-package com.practica1.model.DAO;
+package com.practica1.model.dao;
 
 import com.practica1.model.Concessionaire;
 import com.practica1.model.DatabaseConnection;
@@ -6,13 +6,11 @@ import com.practica1.model.DatabaseConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-public class ConcessionaireCRUD {
+public class ConcessionaireDAO {
     private DatabaseConnection databaseConnection;
 
-    public ConcessionaireCRUD(DatabaseConnection databaseConnection) {
+    public ConcessionaireDAO(DatabaseConnection databaseConnection) {
         this.databaseConnection = databaseConnection;
     }
 
