@@ -20,7 +20,9 @@ public class Concessionaire {
     }
 
     public Concessionaire() {
-
+        this.vehiclesArrayList = new ArrayList<>();
+        this.vehiclesHashMap = new HashMap<>();
+        this.brandSet = new HashSet<>();
     }
 
     public ArrayList<Vehicle> getVehiclesArrayList() {
@@ -39,8 +41,8 @@ public class Concessionaire {
         return vehiclesHashMap;
     }
 
-    public void addToVehiclesHashmap(String str, Vehicle vehicle) {
-        this.vehiclesHashMap.put(str, vehicle);
+    public void addToVehiclesHashmap(Vehicle vehicle) {
+        this.vehiclesHashMap.put(vehicle.getLicensePlate(), vehicle);
     }
 
     public Vehicle removeFromVehicleHashmap(String licensePlate) {
