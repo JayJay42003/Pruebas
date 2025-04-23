@@ -15,7 +15,7 @@ public class DatabaseConnection {
         return H2_Connection;
     }
 
-    public  void setH2_Connection(Connection h2_Connection) {
+    public void setH2_Connection(Connection h2_Connection) {
         H2_Connection = h2_Connection;
     }
 
@@ -37,7 +37,6 @@ public class DatabaseConnection {
                     " model varchar(50), yearCreated date, typeFuel varchar(50), cylinderCapacity int )");
             //Crear concesionario
             H2_Connection.createStatement().execute("CREATE TABLE IF NOT EXISTS concessionaire (idConcessionaire int NOT NULL AUTO_INCREMENT, name varchar(50), numVehicles int)");
-
 
         } catch (SQLException e) {
            e.printStackTrace();
