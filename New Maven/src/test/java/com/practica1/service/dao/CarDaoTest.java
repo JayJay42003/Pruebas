@@ -4,15 +4,37 @@ import com.practica1.model.Car;
 import com.practica1.model.DatabaseConnection;
 import com.practica1.model.common.FuelType;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.practica1.model.common.FuelType.DIESEL;
 import static com.practica1.model.common.FuelType.GASOLINE;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class CarDaoTest {
+    @InjectMocks
+    CarDao mockCarDao;
+    @Mock
+    Car mockCar;
+    @Mock
+    DatabaseConnection mockDatabaseConnection;
+    @Mock
+    PreparedStatement mockPreparedStatement;
+    @Mock
+    Connection mockConnection;
 
     @Test
     void createObject() {
@@ -112,11 +134,11 @@ class CarDaoTest {
 
             //when
             carDao.createObject(new Car(1, 1, "5704GPN", "Toyota", "Corolla", LocalDate.of(2020,1,15), GASOLINE.name(), 4));
-            Car carTest=carDao.readObjectbyLicense("5704GPN");
+            List<Car> carTest=carDao.readAll();
             //then
-            assertEquals(1,carTest.getIdVehicle());
-            assertEquals("5704GPN",carTest.getLicensePlate());
-            assertEquals("Toyota",carTest.getBrand());
+            assertEquals(1,carTest.get(0).getIdVehicle());
+            assertEquals("5704GPN",carTest.get(0).getLicensePlate());
+            assertEquals("Toyota",carTest.get(0).getBrand());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -171,13 +193,13 @@ class CarDaoTest {
             stmt.executeUpdate("ALTER TABLE car ALTER COLUMN idVehicle RESTART WITH 1");
 
             //when
-            concessionaireDao.createObject("c1",2);
             carDao.createObject(new Car(1, 1, "5704GPN", "Toyota", "Corolla", LocalDate.of(2020,1,15), GASOLINE.name(), 4));
-            List<Car> carTest=carDao.updateObject(1,"c1");
+            carDao.updateObject(1,new Car(1, 1, "9999", "Toyota", "Prueba", LocalDate.of(1990,1,3), DIESEL.name(), 4));
+            Car c=carDao.readObjectbyLicense("9999");
             //then
-            assertEquals(1,carTest.get(0).getIdVehicle());
-            assertEquals("5704GPN",carTest.get(0).getLicensePlate());
-            assertEquals("Toyota",carTest.get(0).getBrand());
+            assertEquals(DIESEL,c.getTypeFuel());
+            assertEquals("9999",c.getLicensePlate());
+            assertEquals("Prueba",c.getModel());
 
 
         } catch (SQLException e) {
@@ -189,114 +211,66 @@ class CarDaoTest {
 
     @Test
     void updateObjectbyLicense() {
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        databaseConnection.initializeConnection();
-        CarDao carDao=new CarDao(databaseConnection);
+        try {
+            // Arrange
+            Car car = new Car(1, 1, "9999ZZZ", "Toyota", "Yaris",
+                    LocalDate.of(2022, 5, 10), GASOLINE.name(), 5);
 
-         try {
-             //Elimino los datos anteriores
-             Statement stmt = databaseConnection.getH2_Connection().createStatement();
-             stmt.executeUpdate("DELETE FROM car");
-             stmt.executeUpdate("ALTER TABLE car ALTER COLUMN idVehicle RESTART WITH 1");
+            when(mockDatabaseConnection.getH2_Connection()).thenReturn(mockConnection);
+            when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+            when(mockPreparedStatement.executeUpdate()).thenReturn(1); // simula que 1 fila fue actualizada
 
-             PreparedStatement ps=databaseConnection.getH2_Connection().prepareStatement("INSERT INTO concessionaire(name, numVehicles) VALUES ('conc1',3)");
-             ps.executeUpdate();
-             ps=databaseConnection.getH2_Connection().prepareStatement("INSERT INTO car(idVehicle,idConcessionaire, licensePlate,brand," +
-                     "model,yearCreated,typeFuel,doorsNum) VALUES (1, 1, '5704GPN', 'Toyota', 'Corolla', '2020-1-15', 'GASOLINE', 4)");
-             ps.executeUpdate();
+            // Act
+            mockCarDao.updateObjectbyLicense("5704GPN", car);
 
-             ps=databaseConnection.getH2_Connection().prepareStatement("INSERT INTO car(idVehicle,idConcessionaire, licensePlate,brand," +
-                     "model,yearCreated,typeFuel,doorsNum) VALUES (2, 1, '5704FPF', 'Toyota', 'Corolla', '2006-1-15', 'GASOLINE', 3)");
-             ps.executeUpdate();
+            // Assert
+            verify(mockDatabaseConnection).getH2_Connection();
+            verify(mockConnection).prepareStatement(anyString());
+            verify(mockPreparedStatement).executeUpdate();
 
-              ps = databaseConnection.getH2_Connection().prepareStatement("UPDATE car SET licensePlate=?,brand=?,model=?, yearCreated=?, typeFuel=?, doorsNum=? WHERE idVehicle=?");
-            ps.setString(1, "6500NES");
-            ps.setString(2, "Mercedes");
-            ps.setString(3, "Corolla");
-            ps.setDate(4, Date.valueOf(LocalDate.of(2020, 1, 15)));
-            ps.setString(5, GASOLINE.name());
-            ps.setInt(6, 4);
-            ps.setInt(7, 1);
-            int rows = ps.executeUpdate();
-
-            assertEquals(1, rows);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch (SQLException sql){
+            sql.printStackTrace();
         }
-
-         databaseConnection.closeConnection();
     }
 
     @Test
     void deleteObject() {
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        databaseConnection.initializeConnection();
-        CarDao carDao=new CarDao(databaseConnection);
-
         try {
-            //Elimino los datos anteriores
-            Statement stmt = databaseConnection.getH2_Connection().createStatement();
-            stmt.executeUpdate("DELETE FROM car");
-            stmt.executeUpdate("ALTER TABLE car ALTER COLUMN idVehicle RESTART WITH 1");
+            when(mockDatabaseConnection.getH2_Connection()).thenReturn(mockConnection);
+            when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+            when(mockPreparedStatement.executeUpdate()).thenReturn(1); // simula que 1 fila fue actualizada
 
-            PreparedStatement ps=databaseConnection.getH2_Connection().prepareStatement("INSERT INTO concessionaire(name, numVehicles) VALUES ('conc1',3)");
-            ps.executeUpdate();
-            ps=databaseConnection.getH2_Connection().prepareStatement("INSERT INTO car(idVehicle,idConcessionaire, licensePlate,brand," +
-                    "model,yearCreated,typeFuel,doorsNum) VALUES (1, 1, '5704GPN', 'Toyota', 'Corolla', '2020-1-15', 'GASOLINE', 4)");
-            ps.executeUpdate();
+            // Act
+            mockCarDao.deleteObject(1);
 
-            ps=databaseConnection.getH2_Connection().prepareStatement("INSERT INTO car(idVehicle,idConcessionaire, licensePlate,brand," +
-                    "model,yearCreated,typeFuel,doorsNum) VALUES (2, 1, '5704FPF', 'Toyota', 'Corolla', '2006-1-15', 'GASOLINE', 3)");
-            ps.executeUpdate();
+            // Assert
+            verify(mockDatabaseConnection).getH2_Connection();
+            verify(mockConnection).prepareStatement(anyString());
+            verify(mockPreparedStatement).executeUpdate();
 
-             ps = databaseConnection.getH2_Connection().prepareStatement("UPDATE car SET licensePlate=?,brand=?,model=?, yearCreated=?, typeFuel=?, doorsNum=? WHERE idVehicle=?");
-            ps.setString(1, "6500NES");
-            ps.setString(2, "Mercedes");
-            ps.setString(3, "Corolla");
-            ps.setDate(4, Date.valueOf(LocalDate.of(2020, 1, 15)));
-            ps.setString(5, GASOLINE.name());
-            ps.setInt(6, 4);
-            ps.setInt(7, 1);
-            int rows = ps.executeUpdate();
-
-            assertEquals(1, rows);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch (SQLException sql){
+            sql.printStackTrace();
         }
-
-        databaseConnection.closeConnection();
     }
 
     @Test
     void deleteObjectbyLicense() {
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        databaseConnection.initializeConnection();
-        CarDao carDao=new CarDao(databaseConnection);
-
         try {
-            //Elimino los datos anteriores
-            Statement stmt = databaseConnection.getH2_Connection().createStatement();
-            stmt.executeUpdate("DELETE FROM car");
-            stmt.executeUpdate("ALTER TABLE car ALTER COLUMN idVehicle RESTART WITH 1");
 
-            PreparedStatement ps=databaseConnection.getH2_Connection().prepareStatement("INSERT INTO concessionaire(name, numVehicles) VALUES ('conc1',3)");
-            ps.executeUpdate();
-            ps=databaseConnection.getH2_Connection().prepareStatement("INSERT INTO car(idVehicle,idConcessionaire, licensePlate,brand," +
-                    "model,yearCreated,typeFuel,doorsNum) VALUES (1, 1, '5704GPN', 'Toyota', 'Corolla', '2020-1-15', 'GASOLINE', 4)");
-            ps.executeUpdate();
+            when(mockDatabaseConnection.getH2_Connection()).thenReturn(mockConnection);
+            when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+            when(mockPreparedStatement.executeUpdate()).thenReturn(1); // simula que 1 fila fue actualizada
 
-            ps=databaseConnection.getH2_Connection().prepareStatement("INSERT INTO car(idVehicle,idConcessionaire, licensePlate,brand," +
-                    "model,yearCreated,typeFuel,doorsNum) VALUES (2, 1, '5704FPF', 'Toyota', 'Corolla', '2006-1-15', 'GASOLINE', 3)");
-            ps.executeUpdate();
-            ps = databaseConnection.getH2_Connection().prepareStatement("DELETE FROM car WHERE licensePlate=?");
-            ps.setString(1, "5704GPN");
+            // Act
+            mockCarDao.deleteObjectbyLicense("5704GPN");
 
-            int rows = ps.executeUpdate();
-            assertEquals(1, rows);
-        } catch (SQLException e) {
-            e.printStackTrace();
+            // Assert
+            verify(mockDatabaseConnection).getH2_Connection();
+            verify(mockConnection).prepareStatement(anyString());
+            verify(mockPreparedStatement).executeUpdate();
+
+        }catch (SQLException sql){
+            sql.printStackTrace();
         }
-
-        databaseConnection.closeConnection();
     }
 }

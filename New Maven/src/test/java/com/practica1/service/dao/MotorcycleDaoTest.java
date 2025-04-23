@@ -3,12 +3,15 @@ package com.practica1.service.dao;
 import com.practica1.model.DatabaseConnection;
 import com.practica1.model.common.FuelType;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.*;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class MotorcycleDaoTest {
 
     @Test

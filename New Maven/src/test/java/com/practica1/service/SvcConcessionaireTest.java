@@ -30,7 +30,6 @@ class SvcConcessionaireTest {
     @Mock
     private HashMap<String,Vehicle> hasM;
 
-
     @Test
     @DisplayName("Test para añadir vehiculo")
     void addVehicle() {

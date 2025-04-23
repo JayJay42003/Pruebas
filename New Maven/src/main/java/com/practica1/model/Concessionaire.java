@@ -25,6 +25,18 @@ public class Concessionaire {
         this.brandSet = new HashSet<>();
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getNumVehicles() {
+        return numVehicles;
+    }
+
     public ArrayList<Vehicle> getVehiclesArrayList() {
         return vehiclesArrayList;
     }
