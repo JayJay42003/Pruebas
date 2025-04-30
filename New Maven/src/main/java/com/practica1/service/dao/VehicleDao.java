@@ -27,6 +27,7 @@ public class VehicleDao {
         }
     }
 
+
     public VehicleClass readObject(int id) {
         VehicleClass vehicle=null;
         try {
