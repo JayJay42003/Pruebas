@@ -4,30 +4,20 @@ import java.time.LocalDate;
 
 public class Motorcycle extends Vehicle {
     private int cylinderCapacity;
-    private int idVehicle, idConcessionaire;
+
 
     //Constructor de moto
     public Motorcycle() {
     }
 
     public Motorcycle(int idVehicle, int idConcessionaire, String licensePlate, String brand, String model, LocalDate year, String typeFuel, int cylinderCapacity) {
-        super(licensePlate, brand, model, year, typeFuel);
+        super(idVehicle,idConcessionaire,licensePlate, brand, model, year, typeFuel);
         this.cylinderCapacity = cylinderCapacity;
-        this.idVehicle = idVehicle;
-        this.idConcessionaire = idConcessionaire;
     }
 
     public Motorcycle(String licensePlate, String brand, String model, LocalDate year, String typeFuel, int cylinderCapacity) {
         super(licensePlate, brand, model, year, typeFuel);
         this.cylinderCapacity = cylinderCapacity;
-    }
-
-    public int getIdVehicle() {
-        return idVehicle;
-    }
-
-    public int getIdConcessionaire() {
-        return idConcessionaire;
     }
 
     //Getter cilindrada

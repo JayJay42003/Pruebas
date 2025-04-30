@@ -1,10 +1,14 @@
 package com.practica1.model;
 
+import jakarta.annotation.PostConstruct;
+import org.springframework.stereotype.Component;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+@Component
 public class DatabaseConnection {
     private static final String URL = "jdbc:h2:~/concesionario_db"; // Modo archivo (persistente)
     private static final String USER = "sa";
@@ -19,6 +23,7 @@ public class DatabaseConnection {
         H2_Connection = h2_Connection;
     }
 
+    @PostConstruct
     public void initializeConnection(){
         try {
             H2_Connection= DriverManager.getConnection(URL,USER,PASSWORD);
