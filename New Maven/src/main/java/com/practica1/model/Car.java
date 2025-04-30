@@ -4,16 +4,13 @@ import java.time.LocalDate;
 
 public class Car extends Vehicle{
     private int doorsNum;
-    private int idVehicle , idConcessionaire;
 
     //Constructor de coche
     public Car() {
     }
 
     public Car(int idVehicle, int idConcessionaire, String licensePlate, String brand, String model, LocalDate year, String typeFuel, int doorsNum) {
-        super(licensePlate, brand, model, year, typeFuel);
-        this.idVehicle = idVehicle;
-        this.idConcessionaire = idConcessionaire;
+        super(idVehicle,idConcessionaire,licensePlate, brand, model, year, typeFuel);
         this.doorsNum = doorsNum;
     }
 
@@ -22,18 +19,12 @@ public class Car extends Vehicle{
         this.doorsNum = doorsNum;
     }
 
-    public int getIdVehicle() {
-        return idVehicle;
-    }
-
-    public int getIdConcessionaire() {
-        return idConcessionaire;
-    }
-
     //Getter numero de puertas
     public int getDoorsNum() {
         return doorsNum;
     }
+
+
 
     //Mostrar la informacion de las variables de este objeto
     @Override
