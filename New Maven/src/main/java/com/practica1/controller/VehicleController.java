@@ -1,23 +1,19 @@
 package com.practica1.controller;
 
 import com.practica1.model.*;
-import com.practica1.model.common.FuelType;
 import com.practica1.service.dao.CarDao;
 import com.practica1.service.dao.MotorcycleDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class VehicleController{
+public class VehicleController {
     DatabaseConnection databaseConnection;
     @Autowired
     CarDao carDao;
@@ -26,69 +22,163 @@ public class VehicleController{
 
     public VehicleController() {
         this.databaseConnection = new DatabaseConnection();
-        this.carDao=new CarDao(databaseConnection);
-        this.motorcycleDao=new MotorcycleDao(databaseConnection);
+        this.carDao = new CarDao(databaseConnection);
+        this.motorcycleDao = new MotorcycleDao(databaseConnection);
     }
 
     //Haced un getAll, get por id, filter(que busque solo por los atributos que vienen en el body), insert, update y delete
 
     @GetMapping("/vehicles/cars")
-    public List<Vehicle> getAllCars(){
-        return new ArrayList<>(carDao.readAll());
+    public ResponseEntity<?> getAllCars() {
+        ArrayList<Car> arr = new ArrayList<>(carDao.readAll());
+        if (arr.isEmpty()) {
+            return ResponseEntity.badRequest().body("This arraylist is empty");
+        } else {
+            return ResponseEntity.ok(arr);
+        }
     }
 
     @GetMapping("/vehicles/motorcycles")
-    public List<Vehicle> getAllMotorcycles(){
-        return new ArrayList<>(motorcycleDao.readAll());
+    public ResponseEntity<?> getAllMotorcycles() {
+        ArrayList<Motorcycle> arr = new ArrayList<>(motorcycleDao.readAll());
+        if (arr.isEmpty()) {
+            return ResponseEntity.badRequest().body("This arraylist is empty");
+        } else {
+            return ResponseEntity.ok(arr);
+        }
     }
 
     @GetMapping("/vehicles/car")
-    public Vehicle getCarById(@RequestBody String body){
-        return carDao.readObject(Integer.parseInt(body));
+    public ResponseEntity<?> getCarById(@RequestBody String body) {
+        try {
+            return ResponseEntity.ok(carDao.readObject(Integer.parseInt(body)));
+        } catch (NumberFormatException numberFormatException) {
+            System.err.println(numberFormatException.getMessage());
+            return ResponseEntity.badRequest().body(numberFormatException.getMessage());
+        }
     }
 
     @GetMapping("/vehicles/motorcycle")
-    public Vehicle getMotorcycleById(@RequestBody String body){
-        return motorcycleDao.readObject(Integer.parseInt(body));
+    public ResponseEntity<?> getMotorcycleById(@RequestBody String body) {
+        try {
+            return ResponseEntity.ok(motorcycleDao.readObject(Integer.parseInt(body)));
+        } catch (NumberFormatException numberFormatException) {
+            System.err.println(numberFormatException.getMessage());
+            return ResponseEntity.badRequest().body(numberFormatException.getMessage());
+        }
     }
 
     @GetMapping("/vehicles/filter/car")
-    public List<Car> filterCars(@RequestBody Car car) {
-        return carDao.filter(car);
+    public ResponseEntity<?> filterCars(@RequestBody Car car) {
+        List<Car> cars = carDao.filter(car);
+        if (cars.isEmpty()) {
+            return ResponseEntity.badRequest().body("No se ha devuelto ningún coche");
+        } else {
+            return ResponseEntity.ok(cars);
+        }
     }
 
     @GetMapping("/vehicles/filter/motorcycle")
-    public List<Motorcycle> filterMotorCycles(@RequestBody Motorcycle motorcycle) {
-        return motorcycleDao.filter(motorcycle);
+    public ResponseEntity<?> filterMotorCycles(@RequestBody Motorcycle motorcycle) {
+        List<Motorcycle> motorcycles = motorcycleDao.filter(motorcycle);
+        if (motorcycles.isEmpty()) {
+            return ResponseEntity.badRequest().body("No se ha devuelto ningún coche");
+        } else {
+            return ResponseEntity.ok(motorcycles);
+        }
     }
 
     @PostMapping("/vehicles/insert/car")
-    public String insertVehicleCar(@RequestBody Car car){
-        return carDao.createObject(car);
+    public ResponseEntity<?> insertVehicleCar(@RequestBody Car car) {
+        try {
+            String result = carDao.createObject(car);
+
+            if (result.isEmpty()) {
+                return ResponseEntity
+                        .badRequest().body("Error al insertar el coche. No se devolvió resultado.");
+            }
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Datos inválidos: " + e.getMessage());
+        }
     }
 
     @PostMapping("/vehicles/insert/motorcycle")
-    public String insertVehicleMotorCycle(@RequestBody Motorcycle motorcycle){
-        return motorcycleDao.createObject(motorcycle);
+    public ResponseEntity<?> insertVehicleMotorCycle(@RequestBody Motorcycle motorcycle) {
+        try {
+            String result = motorcycleDao.createObject(motorcycle);
+
+            if (result.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Error al insertar el coche. No se devolvió resultado.");
+            }
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(result);
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Datos inválidos: " + e.getMessage());
+
+        }
     }
 
     @PutMapping("/vehicles/update/car")
-    public String updateCar(@RequestBody Car vehicle){
-        return carDao.updateObject(vehicle);
+    public ResponseEntity<?> updateCar(@RequestBody Car vehicle) {
+        if (vehicle.getIdVehicle() == 0) {
+            return ResponseEntity.badRequest().body("No se ha dado un id de vehiculo");
+        } else {
+            String r = carDao.updateObject(vehicle);
+            if (r.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                return ResponseEntity.ok(r);
+            }
+
+        }
     }
 
     @PutMapping("/vehicles/update/motorcycle")
-    public String updateMotorCycle(@RequestBody Motorcycle vehicle){
-        return motorcycleDao.updateObject(vehicle);
+    public ResponseEntity<?> updateMotorCycle(@RequestBody Motorcycle vehicle) {
+        if (vehicle.getIdVehicle() == 0) {
+            return ResponseEntity.badRequest().body("No se ha dado un id de vehiculo");
+        } else {
+            String r = motorcycleDao.updateObject(vehicle);
+            if (r.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                return ResponseEntity.ok(r);
+            }
+
+        }
     }
 
-    @DeleteMapping("/vehicles/delete")
-    public String deleteVehicle(@RequestBody Vehicle vehicle){
-        if(vehicle instanceof Car){
-            return carDao.deleteObject(vehicle.getIdVehicle());
-        }else if(vehicle instanceof Motorcycle){
-            return motorcycleDao.deleteObject(vehicle.getIdVehicle());
+    @DeleteMapping("/vehicles/delete/car")
+    public ResponseEntity<?> deleteCar(@RequestBody Car vehicle) {
+        try {
+            String r = carDao.deleteObject(vehicle.getIdVehicle());
+            if (r.isEmpty()) {
+                return ResponseEntity.badRequest().body("No se ha borrado ningun coche");
+            } else {
+                return ResponseEntity.ok(r);
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Datos inválidos: " + e.getMessage());
         }
-        return "Tipo de vehículo desconocido: " + vehicle;
     }
+
+    @DeleteMapping("/vehicles/delete/motorcycle")
+    public ResponseEntity<?> deleteMotorcycle(@RequestBody Motorcycle vehicle) {
+        try {
+            String r = motorcycleDao.deleteObject(vehicle.getIdVehicle());
+            if (r.isEmpty()) {
+                return ResponseEntity.badRequest().body("No se ha borrado ninguna moto");
+            } else {
+                return ResponseEntity.ok(r);
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Datos inválidos: " + e.getMessage());
+        }
+    }
+
+
 }
