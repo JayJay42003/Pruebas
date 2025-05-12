@@ -194,7 +194,7 @@ class CarDaoTest {
 
             //when
             carDao.createObject(new Car(1, 1, "5704GPN", "Toyota", "Corolla", LocalDate.of(2020,1,15), GASOLINE.name(), 4));
-            carDao.updateObject(1,new Car(1, 1, "9999", "Toyota", "Prueba", LocalDate.of(1990,1,3), DIESEL.name(), 4));
+            carDao.updateObject(new Car(1, 1, "9999", "Toyota", "Prueba", LocalDate.of(1990,1,3), DIESEL.name(), 4));
             Car c=carDao.readObjectbyLicense("9999");
             //then
             assertEquals(DIESEL,c.getTypeFuel());
