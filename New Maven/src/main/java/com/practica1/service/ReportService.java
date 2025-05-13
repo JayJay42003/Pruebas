@@ -13,28 +13,29 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class ReportService {
-
     @Autowired
-    private DataSource dataSource; // si usas JDBC
+    private DataSource dataSource;
 
     public byte[] exportReportToPdf() throws JRException, SQLException, IOException {
-        // Ruta dentro de resources
-        String jasperPath = "C:\\Users\\joel.jimenez\\JaspersoftWorkspace\\MyReports\\Vehicles.jasper";
-        // Carga el .jasper
-        InputStream reportStream = new ClassPathResource(jasperPath).getInputStream();
+        ClassPathResource jasperResource = new ClassPathResource("Vehicles.jasper");
+        System.out.println("/////////////"+jasperResource.exists());
+        try (InputStream reportStream = jasperResource.getInputStream()) {
 
-        // Llenar el reporte con datos
-        JasperPrint jasperPrint = JasperFillManager.fillReport(
-                reportStream,
-                Collections.emptyMap(),
-                dataSource.getConnection()
-        );
+            JasperPrint jasperPrint = JasperFillManager.fillReport(
+                    reportStream,
+                    Collections.emptyMap(),
+                    dataSource.getConnection()
+            );
 
-        // Exportar a PDF y devolver bytes
-        return JasperExportManager.exportReportToPdf(jasperPrint);
+            byte[] pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
+            System.out.println("///////PDF generado, tamaño (bytes): " + pdfBytes.length);
+
+            return pdfBytes;
+        }
     }
 }

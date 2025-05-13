@@ -29,13 +29,13 @@ public class ReportController {
 
     @GetMapping(value = "/vehiculos", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> getReport() {
+
         try {
             byte[] pdf = reportService.exportReportToPdf();
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
-            // Para descarga forzada, descomentar:
-            // headers.setContentDisposition(ContentDisposition.builder("attachment").filename(reportName + ".pdf").build());
+            headers.setContentDispositionFormData("inline", "vehiculos.pdf");
 
             return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
         } catch (JRException e) {
