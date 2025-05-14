@@ -26,7 +26,7 @@
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
-            <version>7.0.0</version>
+            <version>6.21.3</version>
         </dependency>
 
         <!-- Spring Boot Web (incluye logging con Logback) -->
@@ -70,7 +70,7 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
-                    <include>**/*.jasper</include>
+                    <include>**/*</include>
                 </includes>
             </resource>
         </resources>

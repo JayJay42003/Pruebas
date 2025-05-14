@@ -1,5 +1,6 @@
 package com.practica1.service;
 
+import com.practica1.model.DatabaseConnection;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -19,23 +20,25 @@ import java.util.Map;
 @Service
 public class ReportService {
     @Autowired
-    private DataSource dataSource;
+    private DatabaseConnection dataSource;
 
     public byte[] exportReportToPdf() throws JRException, SQLException, IOException {
         ClassPathResource jasperResource = new ClassPathResource("Vehicles.jasper");
-        System.out.println("/////////////"+jasperResource.exists());
         try (InputStream reportStream = jasperResource.getInputStream()) {
 
+            if(reportStream==null){
+                System.out.println("Stream vacio");
+            }
+
+            Map<String, Object> parameters = new HashMap<>();
             JasperPrint jasperPrint = JasperFillManager.fillReport(
                     reportStream,
-                    Collections.emptyMap(),
+                    parameters,
                     dataSource.getConnection()
             );
 
-            byte[] pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
-            System.out.println("///////PDF generado, tamaño (bytes): " + pdfBytes.length);
 
-            return pdfBytes;
+            return JasperExportManager.exportReportToPdf(jasperPrint);
         }
     }
 }

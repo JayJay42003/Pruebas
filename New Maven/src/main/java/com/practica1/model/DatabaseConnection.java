@@ -3,10 +3,7 @@ package com.practica1.model;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 @Component
 public class DatabaseConnection {
@@ -47,6 +44,10 @@ public class DatabaseConnection {
            e.printStackTrace();
         }
 
+    }
+
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL,USER,PASSWORD);
     }
 
     public void closeConnection(){
